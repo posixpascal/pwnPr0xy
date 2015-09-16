@@ -1,8 +1,19 @@
+GIT
+  remote: git://github.com/djberg96/net-ping.git
+  revision: 46ff1a17aee179e47cd524a97b8215dc028c2b49
+  specs:
+    net-ping (1.7.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    colorize (0.7.7)
+    logger-colors (1.0.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
+  logger-colors
+  net-ping!
