@@ -59,6 +59,7 @@ module ProxyRB
 				`git config --global http.proxy ""`
 				`git config --global https.proxy ""`
 				set_env!(nil)
+				set_firefox!(nil)
 				puts "Unset HTTP proxy"
 				return
 			end
@@ -89,7 +90,19 @@ module ProxyRB
 				puts "Done setting git proxy."
 		end
 
-		def set_firefox!
+		def set_firefox!(reset=false)
+			# macosx only implementation
+			path = "#{ENV['HOME']}/Library/Application\ Support/Firefox/Profiles/"
+			config = Dir["#{path}*.default/prefs.js"][0]
+			data = open(config, "r").read()
+			unless reset
+				data.gsub!(/user_pref\(\"network.proxy.http(.+)\);/, "")
+			end
+			data += "\n" + 'user_pref("network.http", "' + @host + '");'
+			data += "\n" + 'user_pref("network.http_port", "' + @port + '");'
+			puts "done setting firefox"
+
+
 		end
 
 		def set_env!(reset)

@@ -24,7 +24,7 @@ networks:
         proxy: none
         detect_by: 
             iprange:
-            - 192.168.0.0
+            - 192.168.178.0/24
 
 
     work: 
