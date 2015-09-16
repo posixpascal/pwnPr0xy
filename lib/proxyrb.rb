@@ -60,6 +60,7 @@ module ProxyRB
 				`git config --global https.proxy ""`
 				set_env!(nil)
 				set_firefox!(nil)
+				set_systemwide!(nil)
 				puts "Unset HTTP proxy"
 				return
 			end
@@ -96,10 +97,14 @@ module ProxyRB
 			config = Dir["#{path}*.default/prefs.js"][0]
 			data = open(config, "r").read()
 			unless reset
-				data.gsub!(/user_pref\(\"network.proxy.http(.+)\);/, "")
+				data.gsub!(/user_pref\(\"network.proxy.http(.+)\)\;/, "")
 			end
-			data += "\n" + 'user_pref("network.http", "' + @host + '");'
-			data += "\n" + 'user_pref("network.http_port", "' + @port + '");'
+			if @host
+				data += "\n" + 'user_pref("network.http", "' + @host || "" + '");'
+				if @port 
+					data += "\n" + 'user_pref("network.http_port", "' + @port || "" + '");'
+				end
+			end
 			puts "done setting firefox"
 
 
@@ -119,7 +124,12 @@ module ProxyRB
 			end
 		end
 
-		def set_systemwide!
+		def set_systemwide!(reset=nil)
+			puts "We need root access to enable proxy in macosx: "
+			`sudo networksetup -setwebproxy Wi-Fi #{proxy_url}`
+			if reset
+				`sudo networksetup -setwebproxy Wi-Fi off`
+			end
 		end
 	end
 
