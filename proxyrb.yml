@@ -1,0 +1,35 @@
+proxies:
+    school:
+        protocols:
+        - HTTP
+        - HTTPS
+
+        host: 192.168.10.10
+        port: 80
+
+        global: true # make proxy settings global
+        git: true # add git config
+        firefox: true # add proxy to firefox
+
+
+networks:
+    school:
+        proxy: none
+        detect_by:
+            ping:
+            - 192.168.10.10
+
+    home:
+        proxy: none
+        detect_by: 
+            iprange:
+            - 192.168.0.0
+
+
+    work: 
+        proxy: none
+        detect_by:
+            iprange:
+            - 10.0.0.0
+
+    default: home
